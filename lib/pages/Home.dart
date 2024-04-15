@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 
-import '../model/map_model.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
