@@ -12,10 +12,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  MapShapeSource? _shapeSource;
-  List<MapModel>? _mapData;
+  late MapShapeSource _shapeSource;
+  late List<MapModel> _mapData;
 
-  List<String> name = [
+  List<String> provinceName = [
     "آزبایجان غربی",
     "آزبایجان شرقی",
     "اردبیل",
@@ -52,54 +52,52 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     // TODO: implement initState
-    _mapData = _getMapData();
-    super.initState();
-    _shapeSource = MapShapeSource.asset(
-      "assets/ir.json",
-      shapeDataField: "name",
-      dataCount: _mapData!.length,
-      primaryValueMapper: (int index) => _mapData![index].name,
-      dataLabelMapper: (index) => _mapData![index].name,
-      shapeColorValueMapper: (index) => _mapData![index].color,
-    );
-  }
-
-  List<MapModel> _getMapData() {
-    Color rand =
-        Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
-
-    return <MapModel>[
-      MapModel(rand, name[0]),
-      MapModel(rand, name[1]),
-      MapModel(rand, name[2]),
-      MapModel(rand, name[3]),
-      MapModel(rand, name[4]),
-      MapModel(rand, name[5]),
-      MapModel(rand, name[6]),
-      MapModel(rand, name[7]),
-      MapModel(rand, name[8]),
-      MapModel(rand, name[9]),
-      MapModel(rand, name[10]),
-      MapModel(rand, name[11]),
-      MapModel(rand, name[12]),
-      MapModel(rand, name[13]),
-      MapModel(rand, name[14]),
-      MapModel(rand, name[15]),
-      MapModel(rand, name[16]),
-      MapModel(rand, name[17]),
-      MapModel(rand, name[18]),
-      MapModel(rand, name[19]),
-      MapModel(rand, name[20]),
-      MapModel(rand, name[21]),
-      MapModel(rand, name[22]),
-      MapModel(rand, name[24]),
-      MapModel(rand, name[25]),
-      MapModel(rand, name[26]),
-      MapModel(rand, name[27]),
-      MapModel(rand, name[28]),
-      MapModel(rand, name[29]),
-      MapModel(rand, name[30]),
+    _mapData = <MapModel>[
+      MapModel(Colors.orange, provinceName[0]),
+      MapModel(Colors.orange, provinceName[1]),
+      MapModel(Colors.orange, provinceName[2]),
+      MapModel(Colors.orange, provinceName[3]),
+      MapModel(Colors.orange, provinceName[4]),
+      MapModel(Colors.orange, provinceName[5]),
+      MapModel(Colors.orange, provinceName[6]),
+      MapModel(Colors.orange, provinceName[7]),
+      MapModel(Colors.orange, provinceName[8]),
+      MapModel(Colors.orange, provinceName[9]),
+      MapModel(Colors.orange, provinceName[10]),
+      MapModel(Colors.orange, provinceName[11]),
+      MapModel(Colors.orange, provinceName[12]),
+      MapModel(Colors.orange, provinceName[13]),
+      MapModel(Colors.orange, provinceName[14]),
+      MapModel(Colors.orange, provinceName[15]),
+      MapModel(Colors.orange, provinceName[16]),
+      MapModel(Colors.red, provinceName[17]),
+      MapModel(Colors.orange, provinceName[18]),
+      MapModel(Colors.orange, provinceName[19]),
+      MapModel(Colors.orange, provinceName[20]),
+      MapModel(Colors.orange, provinceName[21]),
+      MapModel(Colors.orange, provinceName[22]),
+      MapModel(Colors.orange, provinceName[24]),
+      MapModel(Colors.orange, provinceName[25]),
+      MapModel(Colors.orange, provinceName[26]),
+      MapModel(Colors.orange, provinceName[27]),
+      MapModel(Colors.orange, provinceName[28]),
+      MapModel(Colors.orange, provinceName[29]),
+      MapModel(Colors.orange, provinceName[30]),
     ];
+    ;
+    _shapeSource = MapShapeSource.asset(
+      "assets/iran_geo.json",
+      shapeDataField: "NAME_1",
+      dataCount: _mapData.length,
+      primaryValueMapper: (int index) {
+        print(_mapData[index].name);
+        print(_mapData[index].color);
+        return _mapData[index].name;
+      },
+      shapeColorValueMapper: (int index) => _mapData[index].color,
+    );
+
+    super.initState();
   }
 
   @override
@@ -110,8 +108,15 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(8.0),
           child: SfMaps(layers: [
             MapShapeLayer(
-              source: _shapeSource!,
-              showDataLabels: true,
+              source: _shapeSource,
+              legend: const MapLegend(MapElement.shape),
+              tooltipSettings: MapTooltipSettings(color: Colors.orange),
+              shapeTooltipBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(_mapData[index].name),
+                );
+              },
             )
           ]),
         ),
